@@ -4,7 +4,7 @@ class Valgrind < Formula
   license "GPL-2.0-only"
 
   head do
-    url "https://github.com/hebasto/valgrind-macos.git", branch: "230826-ventura-supp"
+    url "https://github.com/hebasto/valgrind-macos.git", branch: "241024-ventura-supp"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
