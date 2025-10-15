@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-11, macos-12, macos-13]
+        os: [macos-13, macos-14, macos-15, macos-15-intel]
 
     runs-on: ${{ matrix.os }}
 
@@ -19,7 +19,14 @@ jobs:
     steps:
       - name: checkout project
         uses: actions/checkout@v3
+      - name: create a dummy tap
+        run: |
+          brew tap-new local/valgrind
+          cp ./valgrind.rb "$(brew --repository)/Library/Taps/local/homebrew-valgrind/Formula/valgrind.rb"
       - name: install formula locally
-        run: brew install --HEAD ./valgrind.rb
+        run: brew install --HEAD local/valgrind/valgrind
+        env:
+          # FIXME: needed for arm64 (for now)
+          HOMEBREW_I_ACKNOWLEDGE_THIS_MIGHT_CRASH_OR_DAMAGE_MY_COMPUTER: yes
       - name: upgrade formula locally
-        run: brew upgrade --fetch-HEAD ./valgrind.rb
+        run: brew upgrade --fetch-HEAD local/valgrind/valgrind

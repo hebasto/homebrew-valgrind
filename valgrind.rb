@@ -16,10 +16,6 @@ class Valgrind < Formula
           odie "Valgrind cannot build in 32-bit using Xcode 10.14.6 or later"
         end
       end
-
-      on_arm do
-        odie "Valgrind is currently incompatible with ARM-based Macs, see https://github.com/LouisBrunner/valgrind-macos/issues/56"
-      end
     end
   end
 
@@ -32,6 +28,10 @@ class Valgrind < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
+
+    if ENV["HOMEBREW_I_ACKNOWLEDGE_THIS_MIGHT_CRASH_OR_DAMAGE_MY_COMPUTER"] == "yes"
+      ENV["I_ACKNOWLEDGE_THIS_MIGHT_CRASH_OR_DAMAGE_MY_COMPUTER"] = "yes"
+    end
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
